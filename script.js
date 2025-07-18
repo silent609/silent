@@ -52,7 +52,7 @@ document.addEventListener('mousemove', (e) => {
   crosshair.style.top = (e.clientY - 30) + 'px';
 });
 
-// Magnetic title effect (works with typed text)
+// Magnetic title effect (works with static text)
 const magneticTitle = document.getElementById('magnetic-title');
 document.addEventListener('mousemove', (e) => {
   const centerX = window.innerWidth / 2;
@@ -138,9 +138,8 @@ setupOrbitingCopyButton(
   Math.PI
 );
 
-// Typing effect for the main title: "silent"
-(function typeAndDeleteLoop() {
-  const elem = document.getElementById('magnetic-title');
+// Typing effect ONLY for the document/tab title (not the big site text!)
+(function typeAndDeleteTitleLoop() {
   const text = 'silent';
   const typingSpeed = 120; // ms per char (type)
   const deletingSpeed = 70; // ms per char (delete)
@@ -153,7 +152,7 @@ setupOrbitingCopyButton(
   function typeLoop() {
     if (typing) {
       if (i < text.length) {
-        elem.textContent = text.slice(0, i + 1);
+        document.title = text.slice(0, i + 1);
         i++;
         setTimeout(typeLoop, typingSpeed);
       } else {
@@ -162,7 +161,7 @@ setupOrbitingCopyButton(
       }
     } else {
       if (i > 0) {
-        elem.textContent = text.slice(0, i - 1);
+        document.title = text.slice(0, i - 1);
         i--;
         setTimeout(typeLoop, deletingSpeed);
       } else {
