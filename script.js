@@ -12,7 +12,10 @@ document.getElementById('overlay').addEventListener('click', function() {
   }, 700);
 });
 
-// Snowflake creation function (fall gently to right, land, stay, fade out in place)
+//--- Snowflakes with smooth spawn and fade (even if tab focus lost) ---
+const SNOWFLAKE_EVERY = 100; // ms between flakes
+let lastSnowflakeTime = performance.now();
+
 function createSnowflake() {
   const snowflake = document.createElement("div");
   snowflake.classList.add("snowflake");
@@ -23,33 +26,42 @@ function createSnowflake() {
   snowflake.style.height = size + "px";
   const duration = Math.random() * 5 + 5;
   snowflake.style.animationDuration = duration + "s";
+  // Drift each flake for randomness
+  const driftX = 60 + Math.random() * 80;
+  snowflake.style.setProperty('--snowflake-drift', driftX + 'px');
   document.body.appendChild(snowflake);
 
   snowflake.addEventListener('animationend', () => {
-    // Get the landing position using getBoundingClientRect
+    // Position exactly at landing spot, stop animation, fade out now
     const rect = snowflake.getBoundingClientRect();
     snowflake.style.left = (rect.left + window.scrollX) + "px";
     snowflake.style.top = (rect.top + window.scrollY) + "px";
     snowflake.style.transform = "none";
     snowflake.style.animation = "none";
+    snowflake.style.opacity = "0";
     setTimeout(() => {
-      snowflake.style.opacity = "0";
-      setTimeout(() => {
-        snowflake.remove();
-      }, 1000);
-    }, 4000);
+      snowflake.remove();
+    }, 1000); // allow fade-out
   });
 }
-setInterval(createSnowflake, 100);
 
-// Crosshair follows mouse pointer
+function snowflakeLoop(now) {
+  if (now - lastSnowflakeTime > SNOWFLAKE_EVERY) {
+    createSnowflake();
+    lastSnowflakeTime = now;
+  }
+  requestAnimationFrame(snowflakeLoop);
+}
+requestAnimationFrame(snowflakeLoop);
+
+//--- Crosshair follows mouse pointer ---
 const crosshair = document.querySelector('.crosshair-container');
 document.addEventListener('mousemove', (e) => {
   crosshair.style.left = (e.clientX - 30) + 'px';
   crosshair.style.top = (e.clientY - 30) + 'px';
 });
 
-// Magnetic title effect (works with static "silent")
+//--- Magnetic title effect (works with static "silent") ---
 const magneticTitle = document.getElementById('magnetic-title');
 document.addEventListener('mousemove', (e) => {
   const centerX = window.innerWidth / 2;
@@ -64,14 +76,7 @@ document.addEventListener('mouseleave', () => {
 });
 
 /**
- * Creates an orbiting social button with copy-to-clipboard.
- * @param {string} containerId - The ID for the orbiting button container
- * @param {string} btnId - The ID for the button itself
- * @param {string} copiedId - The ID for the "Copied!" message div
- * @param {string} username - The username to copy to clipboard
- * @param {number} orbitRadius - The orbit radius in pixels
- * @param {number} orbitSpeed - The orbit speed (rotations per second)
- * @param {number} orbitOffset - Angle offset in radians
+ * Orbiting social button with copy-to-clipboard.
  */
 function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRadius, orbitSpeed, orbitOffset) {
   const btnContainer = document.getElementById(containerId);
@@ -80,7 +85,6 @@ function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRa
   const pfpContainer = document.querySelector('.pfp-container');
   const magneticTitleElem = document.getElementById('magnetic-title');
 
-  // Copy to clipboard functionality
   btn.addEventListener('click', function() {
     navigator.clipboard.writeText(username).then(() => {
       copiedMsg.classList.add('visible');
@@ -90,7 +94,6 @@ function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRa
     });
   });
 
-  // Orbit animation
   function animateOrbit() {
     const now = Date.now() / 1000;
     const angle = now * orbitSpeed * 2 * Math.PI + orbitOffset;
@@ -110,13 +113,13 @@ function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRa
 setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", 270, 0.07, 0);
 setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", 270, 0.07, Math.PI);
 
-// Typing animation for browser/tab title; deletes back to 's', never empty
+//--- Typing effect for tab: "silent", deletes back to "s", never blank ---
 (function typeAndDeleteTitleLoop() {
   const text = 'silent';
-  const typingSpeed = 120;    // ms per char (typing)
-  const deletingSpeed = 70;   // ms per char (deleting)
-  const holdTime = 350;       // pause after fully typed
-  const restartTime = 600;    // pause at 's' before restarting
+  const typingSpeed = 120;     // ms per character (typing)
+  const deletingSpeed = 70;    // ms per character (deleting)
+  const holdTime = 350;        // pause after fully typed
+  const restartTime = 600;     // pause at 's' before typing again
 
   let i = 0;
   let typing = true;
@@ -137,7 +140,7 @@ setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "
         i--;
         setTimeout(typeLoop, deletingSpeed);
       } else {
-        // At 's', pause and start typing again
+        // At "s", pause, then restart typing immediately
         typing = true;
         setTimeout(typeLoop, restartTime);
       }
