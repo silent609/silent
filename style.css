@@ -128,7 +128,7 @@ h1#magnetic-title {
 
 @keyframes fall {
   to {
-    transform: translateY(100vh) translateX(100px); /* drift right */
+    transform: translateY(100vh) translateX(var(--snowflake-drift, 100px));
   }
 }
 
