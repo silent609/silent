@@ -26,13 +26,11 @@ function createSnowflake() {
   snowflake.style.height = size + "px";
   const duration = Math.random() * 5 + 5;
   snowflake.style.animationDuration = duration + "s";
-  // Drift each flake for randomness
   const driftX = 60 + Math.random() * 80;
   snowflake.style.setProperty('--snowflake-drift', driftX + 'px');
   document.body.appendChild(snowflake);
 
   snowflake.addEventListener('animationend', () => {
-    // Position at landing, stop animation, fade out now
     const rect = snowflake.getBoundingClientRect();
     snowflake.style.left = (rect.left + window.scrollX) + "px";
     snowflake.style.top = (rect.top + window.scrollY) + "px";
@@ -41,7 +39,7 @@ function createSnowflake() {
     snowflake.style.opacity = "0";
     setTimeout(() => {
       snowflake.remove();
-    }, 1000); // allow fade-out
+    }, 1000);
   });
 }
 
@@ -61,7 +59,7 @@ document.addEventListener('mousemove', (e) => {
   crosshair.style.top = (e.clientY - 30) + 'px';
 });
 
-//--- Magnetic title effect (works with static "silent") ---
+//--- Magnetic title effect for "silent" h1 ---
 const magneticTitle = document.getElementById('magnetic-title');
 document.addEventListener('mousemove', (e) => {
   const centerX = window.innerWidth / 2;
@@ -75,7 +73,7 @@ document.addEventListener('mouseleave', () => {
   magneticTitle.style.transform = 'translate(-50%, -50%)';
 });
 
-/* Orbiting social buttons logic */
+//--- Orbiting social button with copy-to-clipboard ---
 function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRadius, orbitSpeed, orbitOffset) {
   const btnContainer = document.getElementById(containerId);
   const btn = document.getElementById(btnId);
