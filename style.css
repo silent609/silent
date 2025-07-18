@@ -118,10 +118,22 @@ h1#magnetic-title {
   transition: opacity 1s;
 }
 @keyframes fall {
-  /* Flakes land at 94% of viewport height (6% above bottom), so fade is visible */
+  /* Flakes land at 94% of viewport height */
   to {
     transform: translateY(94vh) translateX(var(--snowflake-drift, 100px));
   }
+}
+
+.snow-ground-line {
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  height: 2px;
+  top: 94vh;
+  background: rgba(255,255,255,0.37);
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 0 12px 2px rgba(255,255,255,0.18);
 }
 
 .crosshair-container {
