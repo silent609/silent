@@ -1,15 +1,20 @@
 // Overlay click to start music and fade out overlay/blur/text
-document.getElementById('overlay').addEventListener('click', function() {
+document.getElementById('overlay').addEventListener('click', function () {
   const audio = document.getElementById('bg-music');
   audio.loop = true;
-  audio.play().catch((e) => {
-    console.log("Audio play failed:", e);
-  });
+  audio.currentTime = 0;
 
-  this.classList.add('fading');
-  setTimeout(() => {
-    this.style.display = 'none';
-  }, 700);
+  // Play audio on click (trusted gesture)
+  audio.play().then(() => {
+    // Only hide overlay once music starts successfully
+    this.classList.add('fading');
+    setTimeout(() => {
+      this.style.display = 'none';
+    }, 700);
+  }).catch((e) => {
+    console.error("Audio playback failed:", e);
+    alert("Music couldn't play. This may be due to browser settings. Please try again.");
+  });
 });
 
 //--- Snowflakes: fall to just above bottom; no random ground ---
