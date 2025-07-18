@@ -121,7 +121,7 @@ document.getElementById('overlay').addEventListener('click', function() {
     "discord-btn-container",
     "discord-btn",
     "discord-copied",
-    "goldenak",
+    "silent609",
     270,
     0.07,
     0
