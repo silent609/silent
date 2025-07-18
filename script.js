@@ -26,33 +26,31 @@ function createSnowflake() {
   document.body.appendChild(snowflake);
 
   snowflake.addEventListener('animationend', () => {
-    // 1. Get the visual landing position using getBoundingClientRect
+    // Get the landing position using getBoundingClientRect
     const rect = snowflake.getBoundingClientRect();
-    // 2. Set left/top to that position (relative to document)
     snowflake.style.left = (rect.left + window.scrollX) + "px";
     snowflake.style.top = (rect.top + window.scrollY) + "px";
-    // 3. Remove transform and animation so it stays there
     snowflake.style.transform = "none";
     snowflake.style.animation = "none";
-    // 4. Wait 4 seconds, then fade out and remove
+    // Fade out after 4 seconds
     setTimeout(() => {
       snowflake.style.opacity = "0";
       setTimeout(() => {
         snowflake.remove();
-      }, 1000); // fade duration
-    }, 4000); // 4 seconds on the ground
+      }, 1000);
+    }, 4000);
   });
 }
 setInterval(createSnowflake, 100);
 
-// Crosshair follows mouse
+// Crosshair follows mouse pointer
 const crosshair = document.querySelector('.crosshair-container');
 document.addEventListener('mousemove', (e) => {
   crosshair.style.left = (e.clientX - 30) + 'px';
   crosshair.style.top = (e.clientY - 30) + 'px';
 });
 
-// Magnetic title effect (works with static text)
+// Magnetic title effect (works with static "silent")
 const magneticTitle = document.getElementById('magnetic-title');
 document.addEventListener('mousemove', (e) => {
   const centerX = window.innerWidth / 2;
@@ -68,13 +66,13 @@ document.addEventListener('mouseleave', () => {
 
 /**
  * Creates an orbiting social button with copy-to-clipboard.
- * @param {string} containerId - The ID for the orbiting button container (e.g. "discord-btn-container")
- * @param {string} btnId - The ID for the button itself (e.g. "discord-btn")
- * @param {string} copiedId - The ID for the "Copied!" message div (e.g. "discord-copied")
+ * @param {string} containerId - The ID for the orbiting button container
+ * @param {string} btnId - The ID for the button itself
+ * @param {string} copiedId - The ID for the "Copied!" message div
  * @param {string} username - The username to copy to clipboard
  * @param {number} orbitRadius - The orbit radius in pixels
  * @param {number} orbitSpeed - The orbit speed (rotations per second)
- * @param {number} orbitOffset - Angle offset in radians (e.g. 0 for Discord, Math.PI for Roblox)
+ * @param {number} orbitOffset - Angle offset in radians
  */
 function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRadius, orbitSpeed, orbitOffset) {
   const btnContainer = document.getElementById(containerId);
@@ -83,7 +81,7 @@ function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRa
   const pfpContainer = document.querySelector('.pfp-container');
   const magneticTitleElem = document.getElementById('magnetic-title');
 
-  // Copy functionality
+  // Copy to clipboard functionality
   btn.addEventListener('click', function() {
     navigator.clipboard.writeText(username).then(() => {
       copiedMsg.classList.add('visible');
@@ -98,16 +96,17 @@ function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRa
     const now = Date.now() / 1000;
     const angle = now * orbitSpeed * 2 * Math.PI + orbitOffset;
 
-    // Center position (between pfp and title)
+    // Calculate center between pfp and title for orbit center
     const pfpRect = pfpContainer.getBoundingClientRect();
     const titleRect = magneticTitleElem.getBoundingClientRect();
     const centerX = (pfpRect.left + titleRect.left + pfpRect.width/2 + titleRect.width/2) / 2 + window.scrollX;
     const centerY = (pfpRect.top + titleRect.top + pfpRect.height/2 + titleRect.height/2) / 2 + window.scrollY;
 
-    // Orbit position
-    const x = centerX + orbitRadius * Math.cos(angle) - btnContainer.offsetWidth/2;
-    const y = centerY + orbitRadius * Math.sin(angle) - btnContainer.offsetHeight/2;
+    // Calculate orbiting position
+    const x = centerX + orbitRadius * Math.cos(angle) - btnContainer.offsetWidth / 2;
+    const y = centerY + orbitRadius * Math.sin(angle) - btnContainer.offsetHeight / 2;
 
+    // Apply position
     btnContainer.style.left = `${x}px`;
     btnContainer.style.top = `${y}px`;
 
@@ -116,35 +115,17 @@ function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRa
   animateOrbit();
 }
 
-// Discord orbiting copy button
-setupOrbitingCopyButton(
-  "discord-btn-container",
-  "discord-btn",
-  "discord-copied",
-  "goldenak",
-  270,
-  0.07,
-  0
-);
+// Setup the Discord and Roblox orbiting buttons
+setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", 270, 0.07, 0);
+setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", 270, 0.07, Math.PI);
 
-// Roblox orbiting copy button
-setupOrbitingCopyButton(
-  "roblox-btn-container",
-  "roblox-btn",
-  "roblox-copied",
-  "GoldenAk01",
-  270,
-  0.07,
-  Math.PI
-);
-
-// Typing effect ONLY for the document/tab title (not the big site text!)
+// Typing animation loop for browser/tab title ONLY (no empty titles to avoid glitch)
 (function typeAndDeleteTitleLoop() {
   const text = 'silent';
-  const typingSpeed = 120; // ms per char (type)
-  const deletingSpeed = 70; // ms per char (delete)
-  const holdTime = 350; // ms to hold at full text
-  const emptyHoldTime = 600; // ms to hold when empty
+  const typingSpeed = 120; // ms per character typing
+  const deletingSpeed = 70; // ms per character deleting
+  const holdTime = 350; // ms pause after full text typed
+  const emptyHoldTime = 600; // ms pause after deleting to empty (but we avoid empty title)
 
   let i = 0;
   let typing = true;
@@ -161,7 +142,9 @@ setupOrbitingCopyButton(
       }
     } else {
       if (i > 0) {
-        document.title = text.slice(0, i - 1);
+        const newTitle = text.slice(0, i - 1);
+        // Avoid empty string title to prevent browser fallback to URL
+        document.title = newTitle.length > 0 ? newTitle : ' ';
         i--;
         setTimeout(typeLoop, deletingSpeed);
       } else {
