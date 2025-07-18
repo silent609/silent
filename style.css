@@ -1,3 +1,4 @@
+/* === Base Page Style === */
 body {
   margin: 0;
   padding: 0;
@@ -14,6 +15,7 @@ body {
   cursor: none;
 }
 
+/* === Overlay === */
 #overlay {
   position: fixed;
   z-index: 99999;
@@ -29,12 +31,14 @@ body {
   transition: opacity 0.7s cubic-bezier(.4,0,.2,1), backdrop-filter 0.7s cubic-bezier(.4,0,.2,1);
   pointer-events: all;
 }
+
 #overlay.fading {
   opacity: 0;
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
   pointer-events: none;
 }
+
 #overlay-content {
   font-size: 2.5rem;
   font-weight: 600;
@@ -48,11 +52,16 @@ body {
   transition: opacity 0.7s cubic-bezier(.4,0,.2,1);
   opacity: 1;
 }
+
 #overlay.fading #overlay-content {
   opacity: 0;
 }
-audio { display: none; }
 
+audio {
+  display: none;
+}
+
+/* === Profile Picture === */
 .pfp-container {
   position: absolute;
   left: 50%;
@@ -60,6 +69,7 @@ audio { display: none; }
   transform: translate(-50%, -50%);
   z-index: 2;
 }
+
 .pfp {
   width: 96px;
   height: 96px;
@@ -71,6 +81,7 @@ audio { display: none; }
   display: block;
 }
 
+/* === Magnetic Title (H1) === */
 h1#magnetic-title {
   font-size: 4rem;
   position: absolute;
@@ -88,6 +99,7 @@ h1#magnetic-title {
   animation: glowPulse 2s infinite alternate;
   transition: transform 0.15s cubic-bezier(.22,1,.36,1);
 }
+
 @keyframes glowPulse {
   0%, 100% {
     text-shadow:
@@ -105,6 +117,7 @@ h1#magnetic-title {
   }
 }
 
+/* === Snowflake Animation === */
 .snowflake {
   position: absolute;
   top: 0;
@@ -117,14 +130,14 @@ h1#magnetic-title {
   pointer-events: none;
   transition: opacity 1s;
 }
-/* All flakes land at 98vh, so they just hover slightly above the bottom for a visible fade. */
+
 @keyframes fall {
   to {
     transform: translateY(98vh) translateX(var(--snowflake-drift, 100px));
   }
 }
 
-/* Crosshair styles, orbiting buttons, notifications, etc... */
+/* === Custom Crosshair === */
 .crosshair-container {
   position: fixed;
   top: 0;
@@ -135,6 +148,7 @@ h1#magnetic-title {
   z-index: 100000;
   cursor: none;
 }
+
 .crosshair-dot {
   position: absolute;
   top: 50%;
@@ -146,6 +160,7 @@ h1#magnetic-title {
   transform: translate(-50%, -50%);
   box-shadow: 0 0 8px 2px white;
 }
+
 .crosshair-rotating {
   position: absolute;
   top: 50%;
@@ -155,17 +170,26 @@ h1#magnetic-title {
   transform: translate(-50%, -50%);
   animation: spin 3s linear infinite;
 }
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 .crosshair-line {
   position: absolute;
   background: white;
   border-radius: 2px;
 }
+
 :root {
   --dot-size: 10px;
   --gap: 8px;
   --line-length: 18px;
   --line-thickness: 4px;
 }
+
 .crosshair-line.top {
   width: var(--line-thickness);
   height: var(--line-length);
@@ -173,6 +197,7 @@ h1#magnetic-title {
   top: calc(50% - var(--gap) - var(--dot-size)/2 - var(--line-length));
   transform: translateX(-50%);
 }
+
 .crosshair-line.bottom {
   width: var(--line-thickness);
   height: var(--line-length);
@@ -180,6 +205,7 @@ h1#magnetic-title {
   top: calc(50% + var(--gap) + var(--dot-size)/2);
   transform: translateX(-50%);
 }
+
 .crosshair-line.left {
   width: var(--line-length);
   height: var(--line-thickness);
@@ -187,6 +213,7 @@ h1#magnetic-title {
   top: 50%;
   transform: translateY(-50%);
 }
+
 .crosshair-line.right {
   width: var(--line-length);
   height: var(--line-thickness);
@@ -194,14 +221,16 @@ h1#magnetic-title {
   top: 50%;
   transform: translateY(-50%);
 }
-@keyframes spin {
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+
+/* === Discord Orbit Button === */
+#discord-btn-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 10001;
+  pointer-events: auto;
 }
 
-/* Discord Button Orbiting */
-#discord-btn-container { position: absolute; left: 50%; top: 50%; z-index: 10001; pointer-events: auto; }
 #discord-btn {
   background: none;
   border: none;
@@ -212,7 +241,11 @@ h1#magnetic-title {
   box-shadow: 0 2px 8px #fff3;
   transition: box-shadow 0.2s;
 }
-#discord-btn:active { box-shadow: 0 1px 4px #fff2; }
+
+#discord-btn:active {
+  box-shadow: 0 1px 4px #fff2;
+}
+
 .discord-logo-box {
   background: #111;
   border-radius: 16px;
@@ -226,6 +259,7 @@ h1#magnetic-title {
   border: 3px solid #fff;
   overflow: hidden;
 }
+
 .discord-logo {
   width: 44px;
   height: 44px;
@@ -235,10 +269,12 @@ h1#magnetic-title {
   animation: spinLogo 5s linear infinite;
   object-fit: cover;
 }
+
 @keyframes spinLogo {
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg);}
 }
+
 #discord-copied {
   position: fixed;
   left: 50%;
@@ -255,12 +291,20 @@ h1#magnetic-title {
   transition: opacity 0.35s;
   z-index: 10002;
 }
+
 #discord-copied.visible {
   opacity: 1;
 }
 
-/* Roblox Button Orbiting */
-#roblox-btn-container { position: absolute; left: 50%; top: 50%; z-index: 10001; pointer-events: auto; }
+/* === Roblox Orbit Button === */
+#roblox-btn-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 10001;
+  pointer-events: auto;
+}
+
 #roblox-btn {
   background: none;
   border: none;
@@ -271,7 +315,11 @@ h1#magnetic-title {
   box-shadow: 0 2px 8px #fff3;
   transition: box-shadow 0.2s;
 }
-#roblox-btn:active { box-shadow: 0 1px 4px #fff2; }
+
+#roblox-btn:active {
+  box-shadow: 0 1px 4px #fff2;
+}
+
 .roblox-logo-box {
   background: #111;
   border-radius: 16px;
@@ -285,6 +333,7 @@ h1#magnetic-title {
   border: 3px solid #fff;
   overflow: hidden;
 }
+
 .roblox-logo {
   width: 44px;
   height: 44px;
@@ -294,10 +343,12 @@ h1#magnetic-title {
   animation: spinRoblox 7s linear infinite;
   object-fit: cover;
 }
+
 @keyframes spinRoblox {
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg);}
 }
+
 #roblox-copied {
   position: fixed;
   left: 50%;
@@ -314,6 +365,7 @@ h1#magnetic-title {
   transition: opacity 0.35s;
   z-index: 10002;
 }
+
 #roblox-copied.visible {
   opacity: 1;
 }
