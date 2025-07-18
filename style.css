@@ -118,9 +118,8 @@ h1#magnetic-title {
   transition: opacity 1s;
 }
 @keyframes fall {
-  /* Flakes land at 94% of viewport height */
   to {
-    transform: translateY(94vh) translateX(var(--snowflake-drift, 100px));
+    transform: translateY(100vh) translateX(var(--snowflake-drift, 100px));
   }
 }
 
