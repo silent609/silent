@@ -1,10 +1,11 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: black;
-  color: white;
+  background: #181818;
+  color: #fff;
   font-family: Arial, sans-serif;
   height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   position: relative;
   display: flex;
@@ -17,41 +18,34 @@ body {
 #overlay {
   position: fixed;
   z-index: 99999;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  backdrop-filter: blur(5px);
-  transition: opacity 0.7s;
+  backdrop-filter: blur(10px);
+  transition: opacity 0.6s;
   opacity: 1;
   pointer-events: all;
 }
-
 #overlay.fading {
   opacity: 0;
   pointer-events: none;
 }
-
 #overlay-content {
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: white;
-  user-select: none;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 20px 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  font-size: 2.2rem;
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+  padding: 1.2em 2.1em;
+  border-radius: 16px;
+  font-weight: 700;
+  box-shadow: 0 3px 16px #000a;
+  text-shadow: 0 2px 12px #222c, 0 0 4px #fff2;
+  transition: opacity 0.5s;
 }
 
-/* Hide audio element */
-audio {
-  display: none;
-}
+audio { display: none; }
 
 .pfp-container {
   position: absolute;
@@ -60,7 +54,6 @@ audio {
   transform: translate(-50%, -50%);
   z-index: 2;
 }
-
 .pfp {
   width: 96px;
   height: 96px;
@@ -85,7 +78,6 @@ h1#magnetic-title {
   animation: glowPulse 2s infinite alternate;
   transition: transform 0.15s;
 }
-
 @keyframes glowPulse {
   0%, 100% {
     text-shadow: 0 0 6px #fff, 0 0 12px #fff, 0 0 18px #fff3, 0 0 24px #fff2;
@@ -97,168 +89,209 @@ h1#magnetic-title {
 
 .crosshair-container {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 60px;
-  height: 60px;
+  top: 0; left: 0;
+  width: 60px; height: 60px;
   pointer-events: none;
   z-index: 100000;
   cursor: none;
 }
-
 .crosshair-dot {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 10px;
+  top: 50%; left: 50%;
+  width: 10px; height: 10px;
   background: white;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 8px 2px white;
 }
-
 .crosshair-rotating {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 60px;
-  height: 60px;
+  top: 50%; left: 50%;
+  width: 60px; height: 60px;
   transform: translate(-50%, -50%);
   animation: spin 3s linear infinite;
 }
-
 @keyframes spin {
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+  to { transform: translate(-50%, -50%) rotate(360deg);}
 }
-
 .crosshair-line {
   position: absolute;
   background: white;
   border-radius: 2px;
 }
-
-.crosshair-line.top,
-.crosshair-line.bottom {
-  width: 3px;
-  height: 18px;
+:root {
+  --dot-size: 10px;
+  --gap: 8px;
+  --line-length: 18px;
+  --line-thickness: 4px;
+}
+.crosshair-line.top {
+  width: var(--line-thickness);
+  height: var(--line-length);
   left: 50%;
+  top: calc(50% - var(--gap) - var(--dot-size)/2 - var(--line-length));
   transform: translateX(-50%);
 }
-
-.crosshair-line.left,
-.crosshair-line.right {
-  height: 3px;
-  width: 18px;
+.crosshair-line.bottom {
+  width: var(--line-thickness);
+  height: var(--line-length);
+  left: 50%;
+  top: calc(50% + var(--gap) + var(--dot-size)/2);
+  transform: translateX(-50%);
+}
+.crosshair-line.left {
+  width: var(--line-length);
+  height: var(--line-thickness);
+  left: calc(50% - var(--gap) - var(--dot-size)/2 - var(--line-length));
   top: 50%;
   transform: translateY(-50%);
 }
-
-.crosshair-line.top {
-  top: 0;
-}
-.crosshair-line.bottom {
-  bottom: 0;
-}
-.crosshair-line.left {
-  left: 0;
-}
 .crosshair-line.right {
-  right: 0;
+  width: var(--line-length);
+  height: var(--line-thickness);
+  left: calc(50% + var(--gap) + var(--dot-size)/2);
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .snowflake {
   position: absolute;
   top: 0;
+  width: 5px;
+  height: 5px;
   background: white;
   border-radius: 50%;
   opacity: 0.8;
   animation: fall linear forwards;
   pointer-events: none;
+  transition: opacity 1s;
 }
-
 @keyframes fall {
   to {
-    transform: translateY(100vh) translateX(var(--snowflake-drift, 100px));
+    transform: translateY(98vh) translateX(var(--snowflake-drift, 100px));
   }
 }
 
-#discord-btn-container,
-#roblox-btn-container {
+/* Discord Orbit Button */
+#discord-btn-container {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: 50%; top: 50%;
   z-index: 10001;
   pointer-events: auto;
 }
-
-#discord-btn,
-#roblox-btn {
+#discord-btn {
   background: none;
   border: none;
+  outline: none;
   cursor: pointer;
   padding: 0;
   border-radius: 16px;
   box-shadow: 0 2px 8px #fff3;
+  transition: box-shadow 0.2s;
 }
+#discord-btn:active { box-shadow: 0 1px 4px #fff2; }
+.discord-logo-box {
+  background: #111;
+  border-radius: 16px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  box-sizing: border-box;
+  border: 3px solid #fff;
+  overflow: hidden;
+}
+.discord-logo {
+  width: 44px;
+  height: 44px;
+  display: block;
+  border-radius: 12px;
+  filter: drop-shadow(0 0 2px #fff);
+  animation: spinLogo 5s linear infinite;
+  object-fit: cover;
+}
+@keyframes spinLogo {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+#discord-copied {
+  position: fixed;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #222;
+  padding: 8px 20px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+  z-index: 10002;
+}
+#discord-copied.visible { opacity: 1; }
 
-.discord-logo-box,
+/* Roblox Orbit Button */
+#roblox-btn-container {
+  position: absolute;
+  left: 50%; top: 50%;
+  z-index: 10001;
+  pointer-events: auto;
+}
+#roblox-btn {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #fff3;
+  transition: box-shadow 0.2s;
+}
+#roblox-btn:active { box-shadow: 0 1px 4px #fff2; }
 .roblox-logo-box {
   background: #111;
   border-radius: 16px;
   padding: 5px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 56px;
   height: 56px;
+  box-sizing: border-box;
   border: 3px solid #fff;
+  overflow: hidden;
 }
-
-.discord-logo,
 .roblox-logo {
   width: 44px;
   height: 44px;
+  display: block;
   border-radius: 12px;
   filter: drop-shadow(0 0 2px #fff);
+  animation: spinRoblox 7s linear infinite;
   object-fit: cover;
 }
-
-.discord-logo { animation: spinLogo 5s linear infinite; }
-.roblox-logo { animation: spinRoblox 7s linear infinite; }
-
-@keyframes spinLogo {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 @keyframes spinRoblox {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
 }
-
-#discord-copied,
 #roblox-copied {
   position: fixed;
   left: 50%;
+  bottom: 48px;
   transform: translateX(-50%);
   background: #fff;
   color: #222;
-  font-weight: bold;
   padding: 8px 20px;
   border-radius: 12px;
   font-size: 1.2rem;
+  font-weight: bold;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s;
+  transition: opacity 0.35s;
   z-index: 10002;
 }
-
-#discord-copied.visible,
-#roblox-copied.visible {
-  opacity: 1;
-}
-
-#discord-copied { bottom: 12px; }
-#roblox-copied { bottom: 50px; }
+#roblox-copied.visible { opacity: 1; }
