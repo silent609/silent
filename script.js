@@ -32,7 +32,6 @@ function createSnowflake() {
     snowflake.style.top = (rect.top + window.scrollY) + "px";
     snowflake.style.transform = "none";
     snowflake.style.animation = "none";
-    // Fade out after 4 seconds
     setTimeout(() => {
       snowflake.style.opacity = "0";
       setTimeout(() => {
@@ -95,37 +94,29 @@ function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRa
   function animateOrbit() {
     const now = Date.now() / 1000;
     const angle = now * orbitSpeed * 2 * Math.PI + orbitOffset;
-
-    // Calculate center between pfp and title for orbit center
     const pfpRect = pfpContainer.getBoundingClientRect();
     const titleRect = magneticTitleElem.getBoundingClientRect();
     const centerX = (pfpRect.left + titleRect.left + pfpRect.width/2 + titleRect.width/2) / 2 + window.scrollX;
     const centerY = (pfpRect.top + titleRect.top + pfpRect.height/2 + titleRect.height/2) / 2 + window.scrollY;
-
-    // Calculate orbiting position
-    const x = centerX + orbitRadius * Math.cos(angle) - btnContainer.offsetWidth / 2;
-    const y = centerY + orbitRadius * Math.sin(angle) - btnContainer.offsetHeight / 2;
-
-    // Apply position
+    const x = centerX + orbitRadius * Math.cos(angle) - btnContainer.offsetWidth/2;
+    const y = centerY + orbitRadius * Math.sin(angle) - btnContainer.offsetHeight/2;
     btnContainer.style.left = `${x}px`;
     btnContainer.style.top = `${y}px`;
-
     requestAnimationFrame(animateOrbit);
   }
   animateOrbit();
 }
 
-// Setup the Discord and Roblox orbiting buttons
 setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", 270, 0.07, 0);
 setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", 270, 0.07, Math.PI);
 
-// Typing animation loop for browser/tab title ONLY (no empty titles to avoid glitch)
+// Typing animation for browser/tab title; deletes back to 's', never empty
 (function typeAndDeleteTitleLoop() {
   const text = 'silent';
-  const typingSpeed = 120; // ms per character typing
-  const deletingSpeed = 70; // ms per character deleting
-  const holdTime = 350; // ms pause after full text typed
-  const emptyHoldTime = 600; // ms pause after deleting to empty (but we avoid empty title)
+  const typingSpeed = 120;    // ms per char (typing)
+  const deletingSpeed = 70;   // ms per char (deleting)
+  const holdTime = 350;       // pause after fully typed
+  const restartTime = 600;    // pause at 's' before restarting
 
   let i = 0;
   let typing = true;
@@ -141,15 +132,14 @@ setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "
         setTimeout(typeLoop, holdTime);
       }
     } else {
-      if (i > 0) {
-        const newTitle = text.slice(0, i - 1);
-        // Avoid empty string title to prevent browser fallback to URL
-        document.title = newTitle.length > 0 ? newTitle : ' ';
+      if (i > 1) {
+        document.title = text.slice(0, i - 1);
         i--;
         setTimeout(typeLoop, deletingSpeed);
       } else {
+        // At 's', pause and start typing again
         typing = true;
-        setTimeout(typeLoop, emptyHoldTime);
+        setTimeout(typeLoop, restartTime);
       }
     }
   }
