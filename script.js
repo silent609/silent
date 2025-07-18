@@ -12,7 +12,7 @@ document.getElementById('overlay').addEventListener('click', function() {
   }, 700);
 });
 
-//--- Snowflakes: land at random "ground" spot under the line ---
+//--- Snowflakes fall to BOTTOM of screen (no ground line, no random ground) ---
 const SNOWFLAKE_EVERY = 100; // ms between flakes
 let lastSnowflakeTime = performance.now();
 
@@ -28,17 +28,14 @@ function createSnowflake() {
   snowflake.style.animationDuration = duration + "s";
   const driftX = 60 + Math.random() * 80;
   snowflake.style.setProperty('--snowflake-drift', driftX + 'px');
-  // Pick a random "ground" Y (below the line, not at bottom)
-  const groundVh = 94 + Math.random() * 4.5; // 94 to 98.5
-  snowflake.setAttribute('data-ground-vh', groundVh);
 
   document.body.appendChild(snowflake);
 
   snowflake.addEventListener('animationend', () => {
-    // Place at that random Y
-    const groundPx = window.innerHeight * (groundVh / 100);
+    // Land at bottom of the viewport
+    const bottomPx = window.innerHeight;
     snowflake.style.left = (snowflake.getBoundingClientRect().left + window.scrollX) + "px";
-    snowflake.style.top = groundPx + "px";
+    snowflake.style.top = bottomPx + "px";
     snowflake.style.transform = "none";
     snowflake.style.animation = "none";
     snowflake.style.opacity = "0";
