@@ -1,363 +1,362 @@
 body {
-    margin: 0;
-    padding: 0;
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    cursor: none;
-  }
-  
-  #overlay {
-    position: fixed;
-    z-index: 99999;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    opacity: 1;
-    transition: opacity 0.7s cubic-bezier(.4,0,.2,1), backdrop-filter 0.7s cubic-bezier(.4,0,.2,1);
-    pointer-events: all;
-  }
-  
-  #overlay.fading {
-    opacity: 0;
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-    pointer-events: none;
-  }
-  
-  #overlay-content {
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: white;
-    user-select: none;
-    background: none;
-    border: none;
-    box-shadow: none;
-    padding: 0;
-    border-radius: 0;
-    transition: opacity 0.7s cubic-bezier(.4,0,.2,1);
-    opacity: 1;
-  }
-  
-  #overlay.fading #overlay-content {
-    opacity: 0;
-  }
-  
-  audio {
-    display: none;
-  }
-  
-  .pfp-container {
-    position: absolute;
-    left: 50%;
-    top: 25%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-  }
-  
-  .pfp {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid white;
-    box-shadow: 0 0 16px #fff8;
-    background: #222;
-    display: block;
-  }
-  
-  h1#magnetic-title {
-    font-size: 4rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    color: white;
-    z-index: 1;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  color: white;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: none;
+}
+
+#overlay {
+  position: fixed;
+  z-index: 99999;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  opacity: 1;
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), backdrop-filter 0.7s cubic-bezier(.4,0,.2,1);
+  pointer-events: all;
+}
+
+#overlay.fading {
+  opacity: 0;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  pointer-events: none;
+}
+
+#overlay-content {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: white;
+  user-select: none;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1);
+  opacity: 1;
+}
+
+#overlay.fading #overlay-content {
+  opacity: 0;
+}
+
+audio {
+  display: none;
+}
+
+.pfp-container {
+  position: absolute;
+  left: 50%;
+  top: 25%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.pfp {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 0 16px #fff8;
+  background: #222;
+  display: block;
+}
+
+h1#magnetic-title {
+  font-size: 4rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  text-shadow:
+    0 0 8px #fff,
+    0 0 16px #fff,
+    0 0 24px #fff3,
+    0 0 32px #fff2;
+  animation: glowPulse 2s infinite alternate;
+  transition: transform 0.15s cubic-bezier(.22,1,.36,1);
+}
+
+@keyframes glowPulse {
+  0%, 100% {
     text-shadow:
-      0 0 8px #fff,
-      0 0 16px #fff,
-      0 0 24px #fff3,
-      0 0 32px #fff2;
-    animation: glowPulse 2s infinite alternate;
-    transition: transform 0.15s cubic-bezier(.22,1,.36,1);
+      0 0 6px #fff,
+      0 0 12px #fff,
+      0 0 18px #fff3,
+      0 0 24px #fff2;
   }
-  
-  @keyframes glowPulse {
-    0%, 100% {
-      text-shadow:
-        0 0 6px #fff,
-        0 0 12px #fff,
-        0 0 18px #fff3,
-        0 0 24px #fff2;
-    }
-    50% {
-      text-shadow:
-        0 0 14px #fff,
-        0 0 28px #fff,
-        0 0 40px #fff5,
-        0 0 56px #fff3;
-    }
+  50% {
+    text-shadow:
+      0 0 14px #fff,
+      0 0 28px #fff,
+      0 0 40px #fff5,
+      0 0 56px #fff3;
   }
-  
-  .snowflake {
-    position: absolute;
-    top: 0;
-    width: 5px;
-    height: 5px;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: fall linear forwards;
-    pointer-events: none;
-    transition: opacity 1s;
+}
+
+.snowflake {
+  position: absolute;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: fall linear forwards;
+  pointer-events: none;
+  transition: opacity 1s;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh) translateX(100px);
   }
-  
-  @keyframes fall {
-    to {
-      transform: translateY(100vh) translateX(100px); /* drift right */
-    }
+}
+
+.crosshair-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  pointer-events: none;
+  z-index: 100000;
+  cursor: none;
+}
+
+.crosshair-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px 2px white;
+}
+
+.crosshair-rotating {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  transform: translate(-50%, -50%);
+  animation: spin 3s linear infinite;
+}
+
+.crosshair-line {
+  position: absolute;
+  background: white;
+  border-radius: 2px;
+}
+
+:root {
+  --dot-size: 10px;
+  --gap: 8px;
+  --line-length: 18px;
+  --line-thickness: 4px;
+}
+
+.crosshair-line.top {
+  width: var(--line-thickness);
+  height: var(--line-length);
+  left: 50%;
+  top: calc(50% - var(--gap) - var(--dot-size)/2 - var(--line-length));
+  transform: translateX(-50%);
+}
+.crosshair-line.bottom {
+  width: var(--line-thickness);
+  height: var(--line-length);
+  left: 50%;
+  top: calc(50% + var(--gap) + var(--dot-size)/2);
+  transform: translateX(-50%);
+}
+.crosshair-line.left {
+  width: var(--line-length);
+  height: var(--line-thickness);
+  left: calc(50% - var(--gap) - var(--dot-size)/2 - var(--line-length));
+  top: 50%;
+  transform: translateY(-50%);
+}
+.crosshair-line.right {
+  width: var(--line-length);
+  height: var(--line-thickness);
+  left: calc(50% + var(--gap) + var(--dot-size)/2);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
-  
-  .crosshair-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 60px;
-    height: 60px;
-    pointer-events: none;
-    z-index: 100000;
-    cursor: none;
-  }
-  
-  .crosshair-dot {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 10px;
-    height: 10px;
-    background: white;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 8px 2px white;
-  }
-  
-  .crosshair-rotating {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 60px;
-    height: 60px;
-    transform: translate(-50%, -50%);
-    animation: spin 3s linear infinite;
-  }
-  
-  .crosshair-line {
-    position: absolute;
-    background: white;
-    border-radius: 2px;
-  }
-  
-  :root {
-    --dot-size: 10px;
-    --gap: 8px;
-    --line-length: 18px;
-    --line-thickness: 4px;
-  }
-  
-  .crosshair-line.top {
-    width: var(--line-thickness);
-    height: var(--line-length);
-    left: 50%;
-    top: calc(50% - var(--gap) - var(--dot-size)/2 - var(--line-length));
-    transform: translateX(-50%);
-  }
-  .crosshair-line.bottom {
-    width: var(--line-thickness);
-    height: var(--line-length);
-    left: 50%;
-    top: calc(50% + var(--gap) + var(--dot-size)/2);
-    transform: translateX(-50%);
-  }
-  .crosshair-line.left {
-    width: var(--line-length);
-    height: var(--line-thickness);
-    left: calc(50% - var(--gap) - var(--dot-size)/2 - var(--line-length));
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .crosshair-line.right {
-    width: var(--line-length);
-    height: var(--line-thickness);
-    left: calc(50% + var(--gap) + var(--dot-size)/2);
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  
-  @keyframes spin {
-    to {
-      transform: translate(-50%, -50%) rotate(360deg);
-    }
-  }
-  
-  /* Discord Button Orbiting */
-  #discord-btn-container {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    z-index: 10001;
-    pointer-events: auto;
-  }
-  
-  #discord-btn {
-    background: none;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 0;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px #fff3;
-    transition: box-shadow 0.2s;
-  }
-  
-  #discord-btn:active {
-    box-shadow: 0 1px 4px #fff2;
-  }
-  
-  .discord-logo-box {
-    background: #111;
-    border-radius: 16px;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    box-sizing: border-box;
-    border: 3px solid #fff;
-    overflow: hidden;
-  }
-  
-  .discord-logo {
-    width: 44px;
-    height: 44px;
-    display: block;
-    border-radius: 12px;
-    filter: drop-shadow(0 0 2px #fff);
-    animation: spinLogo 5s linear infinite;
-    object-fit: cover;
-  }
-  
-  @keyframes spinLogo {
-    0% { transform: rotate(0deg);}
-    100% { transform: rotate(360deg);}
-  }
-  
-  #discord-copied {
-    position: fixed;
-    left: 50%;
-    bottom: 12px;
-    transform: translateX(-50%);
-    background: #fff;
-    color: #222;
-    padding: 8px 20px;
-    border-radius: 12px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s;
-    z-index: 10002;
-  }
-  
-  #discord-copied.visible {
-    opacity: 1;
-  }
-  
-  /* Roblox Button Orbiting */
-  #roblox-btn-container {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    z-index: 10001;
-    pointer-events: auto;
-  }
-  
-  #roblox-btn {
-    background: none;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 0;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px #fff3;
-    transition: box-shadow 0.2s;
-  }
-  
-  #roblox-btn:active {
-    box-shadow: 0 1px 4px #fff2;
-  }
-  
-  .roblox-logo-box {
-    background: #111;
-    border-radius: 16px;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    box-sizing: border-box;
-    border: 3px solid #fff;
-    overflow: hidden;
-  }
-  
-  .roblox-logo {
-    width: 44px;
-    height: 44px;
-    display: block;
-    border-radius: 12px;
-    filter: drop-shadow(0 0 2px #fff);
-    animation: spinRoblox 7s linear infinite;
-    object-fit: cover;
-  }
-  
-  @keyframes spinRoblox {
-    0% { transform: rotate(0deg);}
-    100% { transform: rotate(360deg);}
-  }
-  
-  #roblox-copied {
-    position: fixed;
-    left: 50%;
-    bottom: 48px;
-    transform: translateX(-50%);
-    background: #fff;
-    color: #222;
-    padding: 8px 20px;
-    border-radius: 12px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s;
-    z-index: 10002;
-  }
-  
-  #roblox-copied.visible {
-    opacity: 1;
-  }
-  
+}
+
+/* Discord Button Orbiting */
+#discord-btn-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 10001;
+  pointer-events: auto;
+}
+
+#discord-btn {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #fff3;
+  transition: box-shadow 0.2s;
+}
+
+#discord-btn:active {
+  box-shadow: 0 1px 4px #fff2;
+}
+
+.discord-logo-box {
+  background: #111;
+  border-radius: 16px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  box-sizing: border-box;
+  border: 3px solid #fff;
+  overflow: hidden;
+}
+
+.discord-logo {
+  width: 44px;
+  height: 44px;
+  display: block;
+  border-radius: 12px;
+  filter: drop-shadow(0 0 2px #fff);
+  animation: spinLogo 5s linear infinite;
+  object-fit: cover;
+}
+
+@keyframes spinLogo {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+#discord-copied {
+  position: fixed;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #222;
+  padding: 8px 20px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+  z-index: 10002;
+}
+
+#discord-copied.visible {
+  opacity: 1;
+}
+
+/* Roblox Button Orbiting */
+#roblox-btn-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 10001;
+  pointer-events: auto;
+}
+
+#roblox-btn {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #fff3;
+  transition: box-shadow 0.2s;
+}
+
+#roblox-btn:active {
+  box-shadow: 0 1px 4px #fff2;
+}
+
+.roblox-logo-box {
+  background: #111;
+  border-radius: 16px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  box-sizing: border-box;
+  border: 3px solid #fff;
+  overflow: hidden;
+}
+
+.roblox-logo {
+  width: 44px;
+  height: 44px;
+  display: block;
+  border-radius: 12px;
+  filter: drop-shadow(0 0 2px #fff);
+  animation: spinRoblox 7s linear infinite;
+  object-fit: cover;
+}
+
+@keyframes spinRoblox {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+#roblox-copied {
+  position: fixed;
+  left: 50%;
+  bottom: 48px;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #222;
+  padding: 8px 20px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+  z-index: 10002;
+}
+
+#roblox-copied.visible {
+  opacity: 1;
+}
