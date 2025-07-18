@@ -12,7 +12,7 @@ document.getElementById('overlay').addEventListener('click', function() {
   }, 700);
 });
 
-//--- Snowflakes with smooth spawn and fade (even if tab focus lost) ---
+//--- Snowflakes with smooth spawn/fade, landing slightly above bottom ---
 const SNOWFLAKE_EVERY = 100; // ms between flakes
 let lastSnowflakeTime = performance.now();
 
@@ -32,7 +32,7 @@ function createSnowflake() {
   document.body.appendChild(snowflake);
 
   snowflake.addEventListener('animationend', () => {
-    // Position exactly at landing spot, stop animation, fade out now
+    // Position at landing, stop animation, fade out now
     const rect = snowflake.getBoundingClientRect();
     snowflake.style.left = (rect.left + window.scrollX) + "px";
     snowflake.style.top = (rect.top + window.scrollY) + "px";
@@ -75,9 +75,7 @@ document.addEventListener('mouseleave', () => {
   magneticTitle.style.transform = 'translate(-50%, -50%)';
 });
 
-/**
- * Orbiting social button with copy-to-clipboard.
- */
+/* Orbiting social buttons logic */
 function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRadius, orbitSpeed, orbitOffset) {
   const btnContainer = document.getElementById(containerId);
   const btn = document.getElementById(btnId);
@@ -116,10 +114,10 @@ setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "
 //--- Typing effect for tab: "silent", deletes back to "s", never blank ---
 (function typeAndDeleteTitleLoop() {
   const text = 'silent';
-  const typingSpeed = 120;     // ms per character (typing)
-  const deletingSpeed = 70;    // ms per character (deleting)
-  const holdTime = 350;        // pause after fully typed
-  const restartTime = 600;     // pause at 's' before typing again
+  const typingSpeed = 120;
+  const deletingSpeed = 70;
+  const holdTime = 350;
+  const restartTime = 600;
 
   let i = 0;
   let typing = true;
@@ -140,7 +138,6 @@ setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "
         i--;
         setTimeout(typeLoop, deletingSpeed);
       } else {
-        // At "s", pause, then restart typing immediately
         typing = true;
         setTimeout(typeLoop, restartTime);
       }
