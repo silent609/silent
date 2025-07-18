@@ -2,54 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>silent</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="overlay" class="visible">
-    <span id="overlay-content">Click to continue</span>
+  <!-- Overlay to start site and music -->
+  <div id="overlay">
+    <span id="overlay-text">Click to continue</span>
   </div>
 
-  <div id="page-content">
-    <audio id="bg-music" preload="auto">
-      <source src="cool.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-    <div class="pfp-container">
-      <img src="be3b0cec3d1613b902c255cb0b693acc.jpg" alt="Profile Picture" class="pfp" />
-    </div>
-    <h1 id="magnetic-title">silent</h1>
-  </div>
+  <!-- Audio (autoplay handled by script) -->
+  <audio id="bg-music" src="cool.mp3" preload="auto"></audio>
 
+  <!-- Crosshair -->
   <div class="crosshair-container">
-    <div class="crosshair-rotating">
-      <div class="crosshair-line top"></div>
-      <div class="crosshair-line right"></div>
-      <div class="crosshair-line bottom"></div>
-      <div class="crosshair-line left"></div>
-    </div>
-    <div class="crosshair-dot"></div>
+    <div class="crosshair"></div>
   </div>
 
-  <!-- Discord Button Orbiting -->
-  <div id="discord-btn-container">
-    <button id="discord-btn" title="Copy Discord username">
-      <span class="discord-logo-box">
-        <img src="discord-logo.png" alt="Discord" class="discord-logo" />
-      </span>
-    </button>
+  <!-- Site Main Content -->
+  <div id="main-content">
+    <h1 id="magnetic-title" class="glow">silent</h1>
+    <!-- Profile Picture/Avatar -->
+    <div class="pfp-container">
+      <img src="https://avatars.githubusercontent.com/u/88211469?v=4" alt="pfp" class="pfp">
+    </div>
+    <!-- Social orbiting buttons -->
+    <div id="discord-btn-container" class="orbit-btn-container">
+      <button id="discord-btn" class="orbit-btn">Copy Discord</button>
+      <span id="discord-copied" class="copy-msg">Copied!</span>
+    </div>
+    <div id="roblox-btn-container" class="orbit-btn-container">
+      <button id="roblox-btn" class="orbit-btn">Copy Roblox</button>
+      <span id="roblox-copied" class="copy-msg">Copied!</span>
+    </div>
   </div>
-  <!-- Roblox Button Orbiting -->
-  <div id="roblox-btn-container">
-    <button id="roblox-btn" title="Copy Roblox username">
-      <span class="roblox-logo-box">
-        <img src="roblox-logo.png" alt="Roblox" class="roblox-logo" />
-      </span>
-    </button>
-  </div>
-  <div id="discord-copied">Copied!</div>
-  <div id="roblox-copied">Copied!</div>
+
+  <!-- Snowflakes (created in JS) -->
+  <!-- No extra HTML needed -->
 
   <script src="script.js"></script>
 </body>
