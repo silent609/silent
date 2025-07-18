@@ -117,14 +117,14 @@ h1#magnetic-title {
   pointer-events: none;
   transition: opacity 1s;
 }
+/* All flakes land at 98vh, so they just hover slightly above the bottom for a visible fade. */
 @keyframes fall {
   to {
-    transform: translateY(100vh) translateX(var(--snowflake-drift, 100px));
+    transform: translateY(98vh) translateX(var(--snowflake-drift, 100px));
   }
 }
 
-/* No .snow-ground-line in this version! */
-
+/* Crosshair styles, orbiting buttons, notifications, etc... */
 .crosshair-container {
   position: fixed;
   top: 0;
@@ -201,13 +201,7 @@ h1#magnetic-title {
 }
 
 /* Discord Button Orbiting */
-#discord-btn-container {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 10001;
-  pointer-events: auto;
-}
+#discord-btn-container { position: absolute; left: 50%; top: 50%; z-index: 10001; pointer-events: auto; }
 #discord-btn {
   background: none;
   border: none;
@@ -266,13 +260,7 @@ h1#magnetic-title {
 }
 
 /* Roblox Button Orbiting */
-#roblox-btn-container {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 10001;
-  pointer-events: auto;
-}
+#roblox-btn-container { position: absolute; left: 50%; top: 50%; z-index: 10001; pointer-events: auto; }
 #roblox-btn {
   background: none;
   border: none;
