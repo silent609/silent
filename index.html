@@ -2,30 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>silent</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Fullscreen overlay -->
+  <!-- Overlay -->
   <div id="overlay" class="visible">
-    <span id="overlay-content">Click to continue</span>
+    <span id="overlay-content">Click anywhere to continue</span>
   </div>
 
   <!-- Audio -->
   <audio id="bg-music" preload="auto">
     <source src="cool.mp3" type="audio/mpeg" />
-    Your browser does not support the audio element.
+    Your browser does not support audio.
   </audio>
 
-  <!-- Profile picture and title -->
+  <!-- Profile picture and magnetic title -->
   <div class="pfp-container">
     <img src="be3b0cec3d1613b902c255cb0b693acc.jpg" alt="Profile Picture" class="pfp" />
   </div>
   <h1 id="magnetic-title">silent</h1>
 
-  <!-- Crosshair Pointer -->
+  <!-- Crosshair -->
   <div class="crosshair-container">
     <div class="crosshair-rotating">
       <div class="crosshair-line top"></div>
@@ -36,29 +36,25 @@
     <div class="crosshair-dot"></div>
   </div>
 
-  <!-- Discord Button -->
+  <!-- Discord and Roblox Orbit Buttons -->
   <div id="discord-btn-container">
-    <button id="discord-btn" title="Copy Discord">
+    <button id="discord-btn" title="Copy Discord username">
       <span class="discord-logo-box">
         <img src="discord-logo.png" alt="Discord" class="discord-logo" />
       </span>
     </button>
   </div>
-
-  <!-- Roblox Button -->
   <div id="roblox-btn-container">
-    <button id="roblox-btn" title="Copy Roblox">
+    <button id="roblox-btn" title="Copy Roblox username">
       <span class="roblox-logo-box">
         <img src="roblox-logo.png" alt="Roblox" class="roblox-logo" />
       </span>
     </button>
   </div>
-
-  <!-- Copy Toasts -->
   <div id="discord-copied">Copied!</div>
   <div id="roblox-copied">Copied!</div>
 
-  <!-- JS -->
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
