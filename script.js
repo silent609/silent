@@ -12,7 +12,7 @@ document.getElementById('overlay').addEventListener('click', function() {
   }, 700);
 });
 
-//--- Snowflakes fall to BOTTOM of screen (no ground line, no random ground) ---
+//--- Snowflakes: fall to just above bottom; no random ground ---
 const SNOWFLAKE_EVERY = 100; // ms between flakes
 let lastSnowflakeTime = performance.now();
 
@@ -28,14 +28,13 @@ function createSnowflake() {
   snowflake.style.animationDuration = duration + "s";
   const driftX = 60 + Math.random() * 80;
   snowflake.style.setProperty('--snowflake-drift', driftX + 'px');
-
   document.body.appendChild(snowflake);
 
   snowflake.addEventListener('animationend', () => {
-    // Land at bottom of the viewport
-    const bottomPx = window.innerHeight;
+    // Land at 98% of viewport height (matches 98vh in @keyframes)
+    const landPx = window.innerHeight * 0.98;
     snowflake.style.left = (snowflake.getBoundingClientRect().left + window.scrollX) + "px";
-    snowflake.style.top = bottomPx + "px";
+    snowflake.style.top = landPx + "px";
     snowflake.style.transform = "none";
     snowflake.style.animation = "none";
     snowflake.style.opacity = "0";
@@ -75,7 +74,7 @@ document.addEventListener('mouseleave', () => {
   magneticTitle.style.transform = 'translate(-50%, -50%)';
 });
 
-//--- Orbiting social button with copy-to-clipboard ---
+//--- Orbiting social buttons with copy-to-clipboard ---
 function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRadius, orbitSpeed, orbitOffset) {
   const btnContainer = document.getElementById(containerId);
   const btn = document.getElementById(btnId);
@@ -107,11 +106,10 @@ function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRa
   }
   animateOrbit();
 }
-
 setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", 270, 0.07, 0);
 setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", 270, 0.07, Math.PI);
 
-//--- Typing effect for tab: "silent", deletes back to "s", never blank ---
+//--- Tab typing effect: "silent" types in, deletes to "s", repeats ---
 (function typeAndDeleteTitleLoop() {
   const text = 'silent';
   const typingSpeed = 120;
