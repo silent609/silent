@@ -176,6 +176,29 @@ h1#magnetic-title {
   }
 }
 
+/* Blood trail effect */
+.blood-trail {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, #8B0000 0%, #4a0000 50%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  animation: fadeBlood 1s ease-out forwards;
+}
+@keyframes fadeBlood {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+}
+
 /* Discord Orbit Button */
 #discord-btn-container {
   position: absolute;
