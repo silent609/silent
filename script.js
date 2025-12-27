@@ -90,10 +90,10 @@ window.addEventListener('DOMContentLoaded', () => {
     animateOrbit();
   }
 
-  // Setup Discord and Roblox buttons
-  setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", 270, 0.07, 0);
-  setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", 270, 0.07, Math.PI);
-  setupOrbitingCopyButton("dox-btn-container", "dox-btn", "dox-copied", "", 270, 0.07, Math.PI * 0.66);
+  // Setup Discord, Roblox, and Dox buttons with larger orbit and slower speed
+  setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", 450, 0.025, 0);
+  setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", 450, 0.025, Math.PI);
+  setupOrbitingCopyButton("dox-btn-container", "dox-btn", "dox-copied", "", 450, 0.025, Math.PI * 0.66);
 
   // Title typing animation
   (function typeAndDeleteTitleLoop() {
