@@ -50,6 +50,23 @@ window.addEventListener('DOMContentLoaded', () => {
     crosshair.style.top = `${e.clientY - 30}px`;
   });
 
+  // Blood trail effect
+  let lastTrailTime = 0;
+  document.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastTrailTime > 20) { // Create trail particle every 20ms
+      lastTrailTime = now;
+      
+      const trail = document.createElement('div');
+      trail.className = 'blood-trail';
+      trail.style.left = e.clientX + 'px';
+      trail.style.top = e.clientY + 'px';
+      document.body.appendChild(trail);
+      
+      setTimeout(() => trail.remove(), 1000);
+    }
+  });
+
   // Magnetic title effect
   const title = document.getElementById('magnetic-title');
   document.addEventListener('mousemove', e => {
@@ -93,7 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Setup Discord, Roblox, and Dox buttons with larger orbit and slower speed
   setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", 450, 0.025, 0);
   setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", 450, 0.025, Math.PI);
-  setupOrbitingCopyButton("dox-btn-container", "dox-btn", "dox-copied", "", 450, 0.025, Math.PI * 0.66);
+  setupOrbitingCopyButton("dox-btn-container", "dox-btn", "dox-copied", "Why ?", 450, 0.025, Math.PI * 0.66);
 
   // Title typing animation
   (function typeAndDeleteTitleLoop() {
