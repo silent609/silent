@@ -2,7 +2,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('overlay');
   const audio = document.getElementById('bg-music');
 
-  // Click ANYWHERE to start music and fade overlay
   document.addEventListener('click', function onFirstClick() {
     audio.currentTime = 0;
     audio.loop = true;
@@ -16,7 +15,6 @@ window.addEventListener('DOMContentLoaded', () => {
     document.removeEventListener('click', onFirstClick);
   });
 
-  // Snowflakes
   setInterval(() => {
     const flake = document.createElement('div');
     flake.className = 'snowflake';
@@ -28,14 +26,12 @@ window.addEventListener('DOMContentLoaded', () => {
     flake.addEventListener('animationend', () => flake.remove());
   }, 100);
 
-  // Crosshair
   const crosshair = document.querySelector('.crosshair-container');
   document.addEventListener('mousemove', (e) => {
     crosshair.style.left = `${e.clientX - 30}px`;
     crosshair.style.top = `${e.clientY - 30}px`;
   });
 
-  // Magnetic title
   const title = document.getElementById('magnetic-title');
   document.addEventListener('mousemove', e => {
     const dx = (e.clientX - window.innerWidth / 2) / window.innerWidth;
@@ -46,7 +42,6 @@ window.addEventListener('DOMContentLoaded', () => {
     title.style.transform = 'translate(-50%, -50%)';
   });
 
-  // Orbiting Copy Buttons
   function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRadius, orbitSpeed, orbitOffset) {
     const btnContainer = document.getElementById(containerId);
     const btn = document.getElementById(btnId);
@@ -72,10 +67,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     animateOrbit();
   }
+
   setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", 270, 0.07, 0);
   setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", 270, 0.07, Math.PI);
 
-  // Tab typing effect
   (function typeAndDeleteTitleLoop() {
     const text = 'silent';
     const typingSpeed = 120;
