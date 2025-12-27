@@ -2,6 +2,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('overlay');
   const audio = document.getElementById('bg-music');
 
+  // Click to remove overlay and play music
   document.addEventListener('click', function onFirstClick() {
     audio.currentTime = 0;
     audio.loop = true;
@@ -15,6 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.removeEventListener('click', onFirstClick);
   });
 
+  // Snowflake effect
   setInterval(() => {
     const flake = document.createElement('div');
     flake.className = 'snowflake';
@@ -26,12 +28,14 @@ window.addEventListener('DOMContentLoaded', () => {
     flake.addEventListener('animationend', () => flake.remove());
   }, 100);
 
+  // Custom crosshair follows mouse
   const crosshair = document.querySelector('.crosshair-container');
   document.addEventListener('mousemove', (e) => {
     crosshair.style.left = `${e.clientX - 30}px`;
     crosshair.style.top = `${e.clientY - 30}px`;
   });
 
+  // Magnetic title effect
   const title = document.getElementById('magnetic-title');
   document.addEventListener('mousemove', e => {
     const dx = (e.clientX - window.innerWidth / 2) / window.innerWidth;
@@ -42,6 +46,7 @@ window.addEventListener('DOMContentLoaded', () => {
     title.style.transform = 'translate(-50%, -50%)';
   });
 
+  // Orbiting copy button setup
   function setupOrbitingCopyButton(containerId, btnId, copiedId, username, orbitRadius, orbitSpeed, orbitOffset) {
     const btnContainer = document.getElementById(containerId);
     const btn = document.getElementById(btnId);
@@ -51,6 +56,8 @@ window.addEventListener('DOMContentLoaded', () => {
       navigator.clipboard.writeText(username).then(() => {
         copiedMsg.classList.add('visible');
         setTimeout(() => copiedMsg.classList.remove('visible'), 1500);
+      }).catch(err => {
+        console.error("Copy failed:", err);
       });
     });
 
@@ -68,9 +75,11 @@ window.addEventListener('DOMContentLoaded', () => {
     animateOrbit();
   }
 
+  // Setup Discord and Roblox buttons
   setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", 270, 0.07, 0);
   setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", 270, 0.07, Math.PI);
 
+  // Title typing animation
   (function typeAndDeleteTitleLoop() {
     const text = 'silent';
     const typingSpeed = 120;
@@ -79,6 +88,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const restartTime = 600;
     let i = 0;
     let typing = true;
+
     function typeLoop() {
       if (typing) {
         if (i < text.length) {
@@ -90,7 +100,7 @@ window.addEventListener('DOMContentLoaded', () => {
           setTimeout(typeLoop, holdTime);
         }
       } else {
-        if (i > 1) {
+        if (i > 0) {
           document.title = text.slice(0, i - 1);
           i--;
           setTimeout(typeLoop, deletingSpeed);
