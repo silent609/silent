@@ -50,27 +50,30 @@ window.addEventListener('DOMContentLoaded', () => {
     crosshair.style.top = `${e.clientY - 30}px`;
   });
 
-  // Blood trail effect - smooth line
+  // Blood trail effect - smooth line with bug fix
   const trailPoints = [];
-  const maxTrailLength = 20;
+  const maxTrailLength = 30; // More points for longer trail
+  let animationFrame;
   
-  document.addEventListener('mousemove', (e) => {
-    trailPoints.push({ x: e.clientX, y: e.clientY, time: Date.now() });
-    
-    // Keep only recent points
-    while (trailPoints.length > maxTrailLength) {
-      trailPoints.shift();
-    }
+  function updateTrail() {
+    const now = Date.now();
     
     // Remove old trail elements
     document.querySelectorAll('.blood-trail').forEach(el => el.remove());
+    
+    // Clean up old points first
+    for (let i = trailPoints.length - 1; i >= 0; i--) {
+      if (now - trailPoints[i].time > 1000) { // Fade over 1000ms (longer)
+        trailPoints.splice(i, 1);
+      }
+    }
     
     // Draw smooth line
     if (trailPoints.length > 1) {
       for (let i = 0; i < trailPoints.length - 1; i++) {
         const start = trailPoints[i];
         const end = trailPoints[i + 1];
-        const age = (Date.now() - start.time) / 500; // Fade over 500ms
+        const age = (now - start.time) / 1000; // Fade over 1000ms
         
         const trail = document.createElement('div');
         trail.className = 'blood-trail';
@@ -90,12 +93,24 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
     
-    // Clean up old points
-    trailPoints.forEach((point, index) => {
-      if (Date.now() - point.time > 500) {
-        trailPoints.splice(index, 1);
-      }
-    });
+    // Continue animation loop
+    if (trailPoints.length > 0) {
+      animationFrame = requestAnimationFrame(updateTrail);
+    }
+  }
+  
+  document.addEventListener('mousemove', (e) => {
+    trailPoints.push({ x: e.clientX, y: e.clientY, time: Date.now() });
+    
+    // Keep only recent points
+    while (trailPoints.length > maxTrailLength) {
+      trailPoints.shift();
+    }
+    
+    // Start animation loop if not already running
+    if (!animationFrame) {
+      animationFrame = requestAnimationFrame(updateTrail);
+    }
   });
 
   // Magnetic title effect
@@ -127,8 +142,11 @@ window.addEventListener('DOMContentLoaded', () => {
     function animateOrbit() {
       const now = Date.now() / 1000;
       const angle = now * orbitSpeed * 2 * Math.PI + orbitOffset;
+      
+      // Get PFP position (30% from top)
       const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
+      const centerY = window.innerHeight * 0.30;
+      
       const x = centerX + orbitRadius * Math.cos(angle) - btnContainer.offsetWidth / 2;
       const y = centerY + orbitRadius * Math.sin(angle) - btnContainer.offsetHeight / 2;
       btnContainer.style.left = `${x}px`;
@@ -138,11 +156,12 @@ window.addEventListener('DOMContentLoaded', () => {
     animateOrbit();
   }
 
-  // Setup Discord, Roblox, and Dox buttons with smaller orbit and slower speed
-  const orbitRadius = Math.min(window.innerWidth, window.innerHeight) * 0.20;
-  setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", orbitRadius, 0.025, 0);
-  setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", orbitRadius, 0.025, Math.PI);
-  setupOrbitingCopyButton("dox-btn-container", "dox-btn", "dox-copied", "Why ?", orbitRadius, 0.025, Math.PI * 0.66);
+  // Setup buttons in perfect triangle formation around PFP
+  const orbitRadius = 140; // Fixed radius around PFP
+  // Triangle: top, bottom-right, bottom-left
+  setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", orbitRadius, 0.025, -Math.PI / 2); // Top
+  setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", orbitRadius, 0.025, Math.PI / 6); // Bottom right
+  setupOrbitingCopyButton("dox-btn-container", "dox-btn", "dox-copied", "Why ?", orbitRadius, 0.025, Math.PI * 5 / 6); // Bottom left
 
   // Title typing animation
   (function typeAndDeleteTitleLoop() {
