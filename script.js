@@ -108,9 +108,10 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // Setup Discord, Roblox, and Dox buttons with larger orbit and slower speed
-  setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", 450, 0.025, 0);
-  setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", 450, 0.025, Math.PI);
-  setupOrbitingCopyButton("dox-btn-container", "dox-btn", "dox-copied", "Why ?", 450, 0.025, Math.PI * 0.66);
+  const orbitRadius = Math.min(window.innerWidth, window.innerHeight) * 0.35;
+  setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", orbitRadius, 0.025, 0);
+  setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", orbitRadius, 0.025, Math.PI);
+  setupOrbitingCopyButton("dox-btn-container", "dox-btn", "dox-copied", "Why ?", orbitRadius, 0.025, Math.PI * 0.66);
 
   // Title typing animation
   (function typeAndDeleteTitleLoop() {
