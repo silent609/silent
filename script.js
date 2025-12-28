@@ -50,21 +50,52 @@ window.addEventListener('DOMContentLoaded', () => {
     crosshair.style.top = `${e.clientY - 30}px`;
   });
 
-  // Blood trail effect
-  let lastTrailTime = 0;
+  // Blood trail effect - smooth line
+  const trailPoints = [];
+  const maxTrailLength = 20;
+  
   document.addEventListener('mousemove', (e) => {
-    const now = Date.now();
-    if (now - lastTrailTime > 20) { // Create trail particle every 20ms
-      lastTrailTime = now;
-      
-      const trail = document.createElement('div');
-      trail.className = 'blood-trail';
-      trail.style.left = e.clientX + 'px';
-      trail.style.top = e.clientY + 'px';
-      document.body.appendChild(trail);
-      
-      setTimeout(() => trail.remove(), 1000);
+    trailPoints.push({ x: e.clientX, y: e.clientY, time: Date.now() });
+    
+    // Keep only recent points
+    while (trailPoints.length > maxTrailLength) {
+      trailPoints.shift();
     }
+    
+    // Remove old trail elements
+    document.querySelectorAll('.blood-trail').forEach(el => el.remove());
+    
+    // Draw smooth line
+    if (trailPoints.length > 1) {
+      for (let i = 0; i < trailPoints.length - 1; i++) {
+        const start = trailPoints[i];
+        const end = trailPoints[i + 1];
+        const age = (Date.now() - start.time) / 500; // Fade over 500ms
+        
+        const trail = document.createElement('div');
+        trail.className = 'blood-trail';
+        
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const length = Math.sqrt(dx * dx + dy * dy);
+        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        
+        trail.style.left = start.x + 'px';
+        trail.style.top = start.y + 'px';
+        trail.style.width = length + 'px';
+        trail.style.transform = `rotate(${angle}deg)`;
+        trail.style.opacity = Math.max(0, 1 - age);
+        
+        document.body.appendChild(trail);
+      }
+    }
+    
+    // Clean up old points
+    trailPoints.forEach((point, index) => {
+      if (Date.now() - point.time > 500) {
+        trailPoints.splice(index, 1);
+      }
+    });
   });
 
   // Magnetic title effect
@@ -107,8 +138,8 @@ window.addEventListener('DOMContentLoaded', () => {
     animateOrbit();
   }
 
-  // Setup Discord, Roblox, and Dox buttons with larger orbit and slower speed
-  const orbitRadius = Math.min(window.innerWidth, window.innerHeight) * 0.35;
+  // Setup Discord, Roblox, and Dox buttons with smaller orbit and slower speed
+  const orbitRadius = Math.min(window.innerWidth, window.innerHeight) * 0.20;
   setupOrbitingCopyButton("discord-btn-container", "discord-btn", "discord-copied", "goldenak", orbitRadius, 0.025, 0);
   setupOrbitingCopyButton("roblox-btn-container", "roblox-btn", "roblox-copied", "GoldenAk01", orbitRadius, 0.025, Math.PI);
   setupOrbitingCopyButton("dox-btn-container", "dox-btn", "dox-copied", "Why ?", orbitRadius, 0.025, Math.PI * 0.66);
