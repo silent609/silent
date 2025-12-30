@@ -53,7 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Blood trail effect - smooth line with bug fix
   const trailPoints = [];
   const maxTrailLength = 30; // More points for longer trail
-  let animationFrame;
+  let animationFrame = null;
   
   function updateTrail() {
     const now = Date.now();
@@ -93,9 +93,11 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
     
-    // Continue animation loop
+    // Continue animation loop while there are points
     if (trailPoints.length > 0) {
       animationFrame = requestAnimationFrame(updateTrail);
+    } else {
+      animationFrame = null; // Reset so it can restart
     }
   }
   
@@ -108,7 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     
     // Start animation loop if not already running
-    if (!animationFrame) {
+    if (animationFrame === null) {
       animationFrame = requestAnimationFrame(updateTrail);
     }
   });
