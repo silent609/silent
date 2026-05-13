@@ -1,255 +1,618 @@
-
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap');
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  #universe {
-    position: relative; width: 100%; height: 600px;
-    background: #000; overflow: hidden; cursor: none;
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#000;
+}
+
+/* FULLSCREEN UNIVERSE */
+#universe{
+  position:fixed;
+  inset:0;
+
+  width:100vw;
+  height:100vh;
+
+  background:#000;
+  overflow:hidden;
+  cursor:none;
+}
+
+/* CANVAS */
+canvas#bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+/* CURSOR GLOW */
+#cursor-glow{
+  position:absolute;
+  width:280px;
+  height:280px;
+  border-radius:50%;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,0.06) 0%,
+      rgba(255,255,255,0.02) 45%,
+      transparent 70%
+    );
+
+  z-index:2;
+  mix-blend-mode:screen;
+  transition:opacity .4s;
+}
+
+/* CURSOR DOT */
+#cursor-dot{
+  position:absolute;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+
+  background:rgba(255,255,255,0.9);
+
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+
+  box-shadow:
+    0 0 8px 3px rgba(255,255,255,0.4),
+    0 0 20px 6px rgba(255,255,255,0.12);
+
+  z-index:10;
+}
+
+/* CENTER TEXT */
+#center-text{
+  position:absolute;
+  top:50%;
+  left:50%;
+
+  transform:translate(-50%,-50%);
+
+  text-align:center;
+
+  z-index:5;
+
+  pointer-events:none;
+  user-select:none;
+}
+
+/* MAIN WORD */
+#word-silence{
+  font-family:'Bebas Neue', sans-serif;
+
+  font-size:clamp(90px,16vw,240px);
+
+  letter-spacing:.22em;
+  line-height:1;
+
+  color:rgba(255,255,255,.92);
+
+  filter:
+    drop-shadow(0 0 18px rgba(255,255,255,.22))
+    drop-shadow(0 0 60px rgba(255,255,255,.07));
+
+  animation:breathe 5s ease-in-out infinite;
+}
+
+@keyframes breathe{
+  0%,100%{
+    filter:
+      drop-shadow(0 0 18px rgba(255,255,255,.18))
+      drop-shadow(0 0 60px rgba(255,255,255,.05));
+    opacity:.88;
   }
-  canvas#bg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  #cursor-glow {
-    position: absolute; width: 280px; height: 280px; border-radius: 50%;
-    pointer-events: none; transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 45%, transparent 70%);
-    z-index: 2; mix-blend-mode: screen; transition: opacity 0.4s;
+
+  50%{
+    filter:
+      drop-shadow(0 0 40px rgba(255,255,255,.35))
+      drop-shadow(0 0 100px rgba(255,255,255,.1));
+    opacity:1;
   }
-  #cursor-dot {
-    position: absolute; width: 5px; height: 5px; border-radius: 50%;
-    background: rgba(255,255,255,0.9); pointer-events: none;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 8px 3px rgba(255,255,255,0.4), 0 0 20px 6px rgba(255,255,255,0.12);
-    z-index: 10;
+}
+
+/* TAGLINE */
+#tagline{
+  font-family:'Space Mono', monospace;
+
+  font-size:10px;
+
+  letter-spacing:.42em;
+
+  color:rgba(255,255,255,.18);
+
+  margin-top:14px;
+
+  text-transform:uppercase;
+
+  animation:fade-in-up 2.5s ease 1s both;
+}
+
+@keyframes fade-in-up{
+  from{
+    opacity:0;
+    transform:translateY(10px);
   }
-  #center-text {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center; z-index: 5; pointer-events: none; user-select: none;
+
+  to{
+    opacity:1;
+    transform:translateY(0);
   }
-  #word-silence {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(72px, 14vw, 130px);
-    letter-spacing: 0.22em; line-height: 1;
-    color: rgba(255,255,255,0.88);
-    filter: drop-shadow(0 0 18px rgba(255,255,255,0.22)) drop-shadow(0 0 60px rgba(255,255,255,0.07));
-    animation: breathe 5s ease-in-out infinite;
+}
+
+/* SPARKS */
+.spark{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:3;
+
+  animation:sfade .9s ease-out forwards;
+}
+
+@keyframes sfade{
+  0%{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:.6;
   }
-  @keyframes breathe {
-    0%,100% { filter: drop-shadow(0 0 18px rgba(255,255,255,0.18)) drop-shadow(0 0 60px rgba(255,255,255,0.05)); opacity:.88; }
-    50% { filter: drop-shadow(0 0 40px rgba(255,255,255,0.35)) drop-shadow(0 0 100px rgba(255,255,255,0.1)); opacity:1; }
+
+  100%{
+    transform:translate(-50%,-50%) scale(2);
+    opacity:0;
   }
-  #tagline {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px; letter-spacing: 0.42em;
-    color: rgba(255,255,255,0.18); margin-top: 14px;
-    text-transform: uppercase;
-    animation: fade-in-up 2.5s ease 1s both;
-  }
-  @keyframes fade-in-up {
-    from { opacity:0; transform:translateY(10px); }
-    to { opacity:1; transform:translateY(0); }
-  }
-  .spark {
-    position: absolute; border-radius: 50%; pointer-events: none; z-index: 3;
-    animation: sfade 0.9s ease-out forwards;
-  }
-  @keyframes sfade {
-    0% { transform:translate(-50%,-50%) scale(1); opacity:.6; }
-    100% { transform:translate(-50%,-50%) scale(2); opacity:0; }
-  }
-  #corner-tl,#corner-tr,#corner-bl,#corner-br {
-    position:absolute; width:32px; height:32px; z-index:6; pointer-events:none;
-    opacity:.15; animation:fade-in-up 3s ease 1.5s both;
-  }
-  #corner-tl{top:24px;left:24px;border-top:1px solid #fff;border-left:1px solid #fff;}
-  #corner-tr{top:24px;right:24px;border-top:1px solid #fff;border-right:1px solid #fff;}
-  #corner-bl{bottom:24px;left:24px;border-bottom:1px solid #fff;border-left:1px solid #fff;}
-  #corner-br{bottom:24px;right:24px;border-bottom:1px solid #fff;border-right:1px solid #fff;}
-  #vignette {
-    position:absolute; inset:0;
-    background:radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.75) 100%);
-    z-index:4; pointer-events:none;
-  }
+}
+
+/* CORNERS */
+#corner-tl,
+#corner-tr,
+#corner-bl,
+#corner-br{
+  position:absolute;
+  width:32px;
+  height:32px;
+  z-index:6;
+  pointer-events:none;
+
+  opacity:.15;
+
+  animation:fade-in-up 3s ease 1.5s both;
+}
+
+#corner-tl{
+  top:24px;
+  left:24px;
+  border-top:1px solid #fff;
+  border-left:1px solid #fff;
+}
+
+#corner-tr{
+  top:24px;
+  right:24px;
+  border-top:1px solid #fff;
+  border-right:1px solid #fff;
+}
+
+#corner-bl{
+  bottom:24px;
+  left:24px;
+  border-bottom:1px solid #fff;
+  border-left:1px solid #fff;
+}
+
+#corner-br{
+  bottom:24px;
+  right:24px;
+  border-bottom:1px solid #fff;
+  border-right:1px solid #fff;
+}
+
+/* VIGNETTE */
+#vignette{
+  position:absolute;
+  inset:0;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 35%,
+      rgba(0,0,0,.75) 100%
+    );
+
+  z-index:4;
+  pointer-events:none;
+}
 </style>
 
-<h2 class="sr-only">Dark website with SILENCE in white, falling snow, and thin white lines orbiting and bending toward the center following the cursor</h2>
-
 <div id="universe">
+
   <canvas id="bg"></canvas>
+
   <div id="cursor-glow"></div>
   <div id="cursor-dot"></div>
+
   <div id="center-text">
     <div id="word-silence">SILENCE</div>
     <div id="tagline">nothing but the cold</div>
   </div>
+
   <div id="corner-tl"></div>
   <div id="corner-tr"></div>
   <div id="corner-bl"></div>
   <div id="corner-br"></div>
+
   <div id="vignette"></div>
+
 </div>
 
 <script>
 const universe = document.getElementById('universe');
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
+
 const cursorGlow = document.getElementById('cursor-glow');
 const cursorDot = document.getElementById('cursor-dot');
 
-let W, H, mx = -999, my = -999;
+let W,H,mx=-999,my=-999;
 
-function resize() {
-  W = canvas.width = universe.clientWidth;
-  H = canvas.height = universe.clientHeight;
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
 }
-resize();
-window.addEventListener('resize', resize);
 
-universe.addEventListener('mousemove', e => {
+resize();
+
+window.addEventListener('resize',resize);
+
+/* MOUSE */
+universe.addEventListener('mousemove',e=>{
+
   const r = universe.getBoundingClientRect();
+
   mx = e.clientX - r.left;
   my = e.clientY - r.top;
-  cursorGlow.style.left = mx + 'px';
-  cursorGlow.style.top = my + 'px';
-  cursorDot.style.left = mx + 'px';
-  cursorDot.style.top = my + 'px';
-  maybeSpawn(mx, my);
-});
-universe.addEventListener('mouseleave', () => { cursorGlow.style.opacity='0'; cursorDot.style.opacity='0'; });
-universe.addEventListener('mouseenter', () => { cursorGlow.style.opacity='1'; cursorDot.style.opacity='1'; });
 
+  cursorGlow.style.left = mx+'px';
+  cursorGlow.style.top = my+'px';
+
+  cursorDot.style.left = mx+'px';
+  cursorDot.style.top = my+'px';
+
+  maybeSpawn(mx,my);
+
+});
+
+universe.addEventListener('mouseleave',()=>{
+  cursorGlow.style.opacity='0';
+  cursorDot.style.opacity='0';
+});
+
+universe.addEventListener('mouseenter',()=>{
+  cursorGlow.style.opacity='1';
+  cursorDot.style.opacity='1';
+});
+
+/* SPARKS */
 let spawnTimer = 0;
-function maybeSpawn(x, y) {
+
+function maybeSpawn(x,y){
+
   const now = Date.now();
-  if (now - spawnTimer > 55) {
+
+  if(now - spawnTimer > 55){
+
     spawnTimer = now;
-    spawnSpark(x, y);
-    for (let i = 0; i < 2; i++) addParticle(x, y);
+
+    spawnSpark(x,y);
+
+    for(let i=0;i<2;i++){
+      addParticle(x,y);
+    }
   }
 }
 
-function spawnSpark(x, y) {
+function spawnSpark(x,y){
+
   const el = document.createElement('div');
-  el.className = 'spark';
-  const size = 2 + Math.random() * 3;
-  const alpha = 0.25 + Math.random() * 0.35;
-  el.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;background:rgba(255,255,255,${alpha});box-shadow:0 0 ${size*3}px rgba(255,255,255,${alpha*0.5})`;
+
+  el.className='spark';
+
+  const size = 2 + Math.random()*3;
+
+  const alpha = .25 + Math.random()*.35;
+
+  el.style.cssText = `
+    width:${size}px;
+    height:${size}px;
+    left:${x}px;
+    top:${y}px;
+    background:rgba(255,255,255,${alpha});
+    box-shadow:0 0 ${size*3}px rgba(255,255,255,${alpha*.5})
+  `;
+
   universe.appendChild(el);
-  setTimeout(() => el.remove(), 900);
+
+  setTimeout(()=>el.remove(),900);
 }
 
+/* PARTICLES */
 const particles = [];
-function addParticle(x, y) {
-  const angle = Math.random() * Math.PI * 2;
-  const speed = 0.2 + Math.random() * 0.7;
-  particles.push({ x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed, life:1, decay: 0.009+Math.random()*0.012, size:1+Math.random()*1.8 });
-}
 
-const snowflakes = [];
-for (let i = 0; i < 120; i++) {
-  snowflakes.push({
-    x: Math.random(), y: Math.random(),
-    r: 0.4 + Math.random() * 1.3,
-    speed: 0.00015 + Math.random() * 0.00038,
-    drift: (Math.random() - 0.5) * 0.00010,
-    alpha: 0.07 + Math.random() * 0.28,
-    wobble: Math.random() * Math.PI * 2,
-    wobbleSpeed: 0.005 + Math.random() * 0.013
+function addParticle(x,y){
+
+  const angle = Math.random()*Math.PI*2;
+
+  const speed = .2 + Math.random()*.7;
+
+  particles.push({
+    x,
+    y,
+    vx:Math.cos(angle)*speed,
+    vy:Math.sin(angle)*speed,
+    life:1,
+    decay:.009+Math.random()*.012,
+    size:1+Math.random()*1.8
   });
+
 }
 
-// Lines configuration — 8 arms orbiting the center, curving toward cursor
+/* SNOW */
+const snowflakes = [];
+
+for(let i=0;i<120;i++){
+
+  snowflakes.push({
+
+    x:Math.random(),
+    y:Math.random(),
+
+    r:.4+Math.random()*1.3,
+
+    speed:.00015+Math.random()*.00038,
+
+    drift:(Math.random()-.5)*.00010,
+
+    alpha:.07+Math.random()*.28,
+
+    wobble:Math.random()*Math.PI*2,
+
+    wobbleSpeed:.005+Math.random()*.013
+
+  });
+
+}
+
+/* ORBIT LINES */
 const NUM_LINES = 8;
-const linePhases = Array.from({length: NUM_LINES}, (_, i) => (i / NUM_LINES) * Math.PI * 2);
+
+const linePhases =
+  Array.from(
+    {length:NUM_LINES},
+    (_,i)=>(i/NUM_LINES)*Math.PI*2
+  );
 
 let t = 0;
 
-function draw() {
-  ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, W, H);
+function draw(){
 
-  const cx = W / 2, cy = H / 2;
+  ctx.clearRect(0,0,W,H);
 
-  // Snow
-  snowflakes.forEach(s => {
+  ctx.fillStyle='#000';
+  ctx.fillRect(0,0,W,H);
+
+  const cx = W/2;
+  const cy = H/2;
+
+  /* SNOW */
+  snowflakes.forEach(s=>{
+
     s.y += s.speed;
+
     s.wobble += s.wobbleSpeed;
-    s.x += s.drift + Math.sin(s.wobble) * 0.00007;
-    if (s.y > 1) { s.y = -0.01; s.x = Math.random(); }
-    if (s.x < 0) s.x = 1; if (s.x > 1) s.x = 0;
-    const sx = s.x * W, sy = s.y * H;
-    const distToMouse = Math.hypot(sx - mx, sy - my);
-    const repel = Math.max(0, 1 - distToMouse / 80);
-    const angle = Math.atan2(sy - my, sx - mx);
+
+    s.x += s.drift + Math.sin(s.wobble)*.00007;
+
+    if(s.y > 1){
+      s.y = -.01;
+      s.x = Math.random();
+    }
+
+    if(s.x < 0) s.x = 1;
+    if(s.x > 1) s.x = 0;
+
+    const sx = s.x * W;
+    const sy = s.y * H;
+
+    const distToMouse =
+      Math.hypot(sx-mx,sy-my);
+
+    const repel =
+      Math.max(0,1-distToMouse/80);
+
+    const angle =
+      Math.atan2(sy-my,sx-mx);
+
     ctx.beginPath();
-    ctx.arc(sx + Math.cos(angle)*repel*16, sy + Math.sin(angle)*repel*7, s.r, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(255,255,255,${s.alpha + repel*0.25})`;
+
+    ctx.arc(
+      sx + Math.cos(angle)*repel*16,
+      sy + Math.sin(angle)*repel*7,
+      s.r,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fillStyle =
+      `rgba(255,255,255,${s.alpha + repel*.25})`;
+
     ctx.fill();
+
   });
 
-  // Cursor particles
-  for (let i = particles.length - 1; i >= 0; i--) {
+  /* CURSOR PARTICLES */
+  for(let i=particles.length-1;i>=0;i--){
+
     const p = particles[i];
-    p.x += p.vx; p.y += p.vy; p.life -= p.decay;
-    if (p.life <= 0) { particles.splice(i, 1); continue; }
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    p.life -= p.decay;
+
+    if(p.life <= 0){
+
+      particles.splice(i,1);
+
+      continue;
+    }
+
     ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(255,255,255,${p.life * 0.45})`;
+
+    ctx.arc(
+      p.x,
+      p.y,
+      p.size * p.life,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fillStyle =
+      `rgba(255,255,255,${p.life*.45})`;
+
     ctx.fill();
   }
 
-  // Orbiting lines connected to center
-  const mouseValid = mx > 0 && mx < W && my > 0 && my < H;
+  /* ORBITING LINES */
+  const mouseValid =
+    mx>0 && mx<W && my>0 && my<H;
+
   const targetX = mouseValid ? mx : cx;
   const targetY = mouseValid ? my : cy;
 
-  for (let i = 0; i < NUM_LINES; i++) {
-    const phase = linePhases[i] + t * 0.004;
-    // Arm tip orbits at radius ~170, slightly elliptical
-    const armRadius = 170 + Math.sin(t * 0.018 + i * 1.3) * 28;
-    const tipX = cx + Math.cos(phase) * armRadius;
-    const tipY = cy + Math.sin(phase) * armRadius * 0.55;
+  for(let i=0;i<NUM_LINES;i++){
 
-    // Control point pulled gently toward cursor
-    const pull = 0.22 + Math.sin(t * 0.025 + i) * 0.05;
-    const cpX = cx + (targetX - cx) * pull + Math.cos(phase + 0.6) * 40;
-    const cpY = cy + (targetY - cy) * pull + Math.sin(phase + 0.6) * 20;
+    const phase =
+      linePhases[i] + t*.004;
 
-    // Pulsing opacity
-    const alpha = 0.06 + Math.sin(t * 0.03 + i * 0.7) * 0.025;
+    const armRadius =
+      Math.min(W,H)*0.22 +
+      Math.sin(t*.018 + i*1.3)*28;
+
+    const tipX =
+      cx + Math.cos(phase)*armRadius;
+
+    const tipY =
+      cy + Math.sin(phase)*armRadius*.55;
+
+    const pull =
+      .22 + Math.sin(t*.025 + i)*.05;
+
+    const cpX =
+      cx +
+      (targetX-cx)*pull +
+      Math.cos(phase+.6)*40;
+
+    const cpY =
+      cy +
+      (targetY-cy)*pull +
+      Math.sin(phase+.6)*20;
+
+    const alpha =
+      .06 + Math.sin(t*.03+i*.7)*.025;
 
     ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.quadraticCurveTo(cpX, cpY, tipX, tipY);
-    ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
-    ctx.lineWidth = 0.6;
+
+    ctx.moveTo(cx,cy);
+
+    ctx.quadraticCurveTo(
+      cpX,
+      cpY,
+      tipX,
+      tipY
+    );
+
+    ctx.strokeStyle =
+      `rgba(255,255,255,${alpha})`;
+
+    ctx.lineWidth = .6;
+
     ctx.stroke();
 
-    // Small dot at tip
     ctx.beginPath();
-    ctx.arc(tipX, tipY, 1.2, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(255,255,255,${alpha * 2.5})`;
+
+    ctx.arc(
+      tipX,
+      tipY,
+      1.2,
+      0,
+      Math.PI*2
+    );
+
+    ctx.fillStyle =
+      `rgba(255,255,255,${alpha*2.5})`;
+
     ctx.fill();
+
   }
 
-  // Soft center glow
-  const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 90);
-  cg.addColorStop(0, 'rgba(255,255,255,0.03)');
-  cg.addColorStop(1, 'transparent');
-  ctx.fillStyle = cg;
-  ctx.fillRect(0, 0, W, H);
+  /* CENTER GLOW */
+  const cg =
+    ctx.createRadialGradient(
+      cx,cy,0,
+      cx,cy,90
+    );
 
-  // Cursor halo
-  if (mouseValid) {
-    const mg = ctx.createRadialGradient(mx, my, 0, mx, my, 140);
-    mg.addColorStop(0, 'rgba(255,255,255,0.035)');
-    mg.addColorStop(1, 'transparent');
+  cg.addColorStop(0,'rgba(255,255,255,0.03)');
+  cg.addColorStop(1,'transparent');
+
+  ctx.fillStyle = cg;
+
+  ctx.fillRect(0,0,W,H);
+
+  /* CURSOR HALO */
+  if(mouseValid){
+
+    const mg =
+      ctx.createRadialGradient(
+        mx,my,0,
+        mx,my,140
+      );
+
+    mg.addColorStop(
+      0,
+      'rgba(255,255,255,0.035)'
+    );
+
+    mg.addColorStop(
+      1,
+      'transparent'
+    );
+
     ctx.fillStyle = mg;
-    ctx.fillRect(0, 0, W, H);
+
+    ctx.fillRect(0,0,W,H);
   }
 
   t++;
+
   requestAnimationFrame(draw);
+
 }
+
 draw();
 </script>
